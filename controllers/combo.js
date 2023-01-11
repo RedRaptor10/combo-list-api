@@ -50,3 +50,25 @@ exports.createCombo = function(req, res, next) {
         });
     });
 };
+
+// Update Combo
+exports.updateCombo = function(req, res, next) {
+    const combo = new Combo({
+        _id: req.params.comboId,
+        damage: req.body.damage,
+        date: req.body.date,
+        input: req.body.input,
+        notes: req.body.notes,
+        tags: req.body.tags,
+        type: req.body.type
+    });
+
+    // Save to database
+    Combo.findByIdAndUpdate(req.params.comboId, combo, { new: true }, function(err, results) {
+        if (err) { return next(err); }
+        res.json({
+            combo: results,
+            message: 'Success'
+        });
+    });
+};

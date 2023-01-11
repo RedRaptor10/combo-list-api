@@ -13,4 +13,7 @@ router.get('/:comboId', comboController.getCombo);
 // Create Combo
 router.post('/create', comboController.createCombo);
 
+// Update Combo
+router.put('/:comboId/update', comboController.updateCombo);
+
 module.exports = router;
