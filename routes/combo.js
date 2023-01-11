@@ -16,4 +16,7 @@ router.post('/create', comboController.createCombo);
 // Update Combo
 router.put('/:comboId/update', comboController.updateCombo);
 
+// Delete Combo
+router.delete('/:comboId/delete', comboController.deleteCombo);
+
 module.exports = router;

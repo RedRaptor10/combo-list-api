@@ -72,3 +72,13 @@ exports.updateCombo = function(req, res, next) {
         });
     });
 };
+
+// Delete Combo
+exports.deleteCombo = function(req, res, next) {
+    Combo.findByIdAndRemove(req.params.comboId, function(err) {
+        if (err) { return next(err); }
+        res.json({
+            message: 'Success'
+        });
+    });
+};
