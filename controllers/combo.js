@@ -9,6 +9,24 @@ exports.getCombo = function(req, res, next) {
     });
 };
 
+// Get Combos
+exports.getCombos = function(req, res, next) {
+    let sortby = '_id';
+    let orderby = 'ascending';
+
+    if (req.query.sort == 'damage') { sortby = 'damage'; }
+    else if (req.query.sort == 'date') { sortby = 'date'; }
+
+    if (req.query.orderby == 'desc') { orderby = 'descending'; }
+
+    Combo.find({})
+    .sort({ [sortby]: orderby }) // Sort by (Default: _id in ascending order)
+    .exec(function(err, results) {
+        if (err) { return next(err); }
+        res.json(results);
+    });
+};
+
 // Create Combo
 exports.createCombo = function(req, res, next) {
     const combo = new Combo({
