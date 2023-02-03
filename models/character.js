@@ -7,6 +7,12 @@ const CharacterSchema = new Schema({
         minLength: 1,
         maxLength: 20,
         required: true
+    },
+    slug: {
+        type: String,
+        minLength: 1,
+        maxLength: 20,
+        required: true
     }
 });
 

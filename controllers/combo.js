@@ -37,7 +37,7 @@ exports.getCharacterCombos = function(req, res, next) {
 
     if (req.query.orderby == 'desc') { orderby = 'descending'; }
 
-    Combo.find({ character: req.params.characterId })
+    Combo.find({ character: req.params.character })
     .sort({ [sortby]: orderby }) // Sort by (Default: _id in ascending order)
     .exec(function(err, results) {
         if (err) { return next(err); }

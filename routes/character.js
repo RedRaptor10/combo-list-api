@@ -12,6 +12,6 @@ router.get('/', characterController.getCharacters);
 router.get('/:characterId', characterController.getCharacter);
 
 // Get Character Combos
-router.get('/:characterId/combos', comboController.getCharacterCombos);
+router.get('/:character/combos', comboController.getCharacterCombos);
 
 module.exports = router;
