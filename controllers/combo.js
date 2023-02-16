@@ -48,6 +48,7 @@ exports.getCharacterCombos = function(req, res, next) {
 // Create Combo
 exports.createCombo = function(req, res, next) {
     const combo = new Combo({
+        character: req.body.character,
         damage: req.body.damage,
         date: req.body.date,
         input: req.body.input,
@@ -73,6 +74,7 @@ exports.createCombo = function(req, res, next) {
 exports.updateCombo = function(req, res, next) {
     const combo = new Combo({
         _id: req.params.comboId,
+        character: req.body.character,
         damage: req.body.damage,
         date: req.body.date,
         input: req.body.input,
