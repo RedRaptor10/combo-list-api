@@ -1,4 +1,5 @@
 const Combo = require('../models/combo');
+const { body, validationResult } = require('express-validator');
 
 // Get Combo
 exports.getCombo = function(req, res, next) {
@@ -46,52 +47,74 @@ exports.getCharacterCombos = function(req, res, next) {
 };
 
 // Create Combo
-exports.createCombo = function(req, res, next) {
-    const combo = new Combo({
-        character: req.body.character,
-        damage: req.body.damage,
-        date: req.body.date,
-        input: req.body.input,
-        notes: req.body.notes,
-        tags: req.body.tags,
-        type: req.body.type
-    });
+exports.createCombo = [
+    body('input').trim().escape().isLength({ min: 1 }).withMessage('Input required.').isLength( {max: 500 }).withMessage('Input must have 500 characters or less.'),
+    body('notes', 'Notes must have 500 characters or less.').trim().escape().isLength({ max: 500 }),
 
-    // Save to database
-    combo.save(function(err) {
-        if (err) { return next(err); }
-        res.json({
-            combo: {
-                _id: combo._id,
-                ...req.body
-            },
-            message: 'Success'
-        });
-    });
-};
+    function(req, res, next) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.json({ errors: errors.array() });
+        } else {
+            const combo = new Combo({
+                character: req.body.character,
+                damage: req.body.damage,
+                date: req.body.date,
+                input: req.body.input,
+                notes: req.body.notes,
+                tags: req.body.tags,
+                type: req.body.type
+            });
+
+            // Save to database
+            combo.save(function(err) {
+                if (err) { return next(err); }
+                res.json({
+                    combo: {
+                        _id: combo._id,
+                        ...req.body
+                    },
+                    message: 'Success'
+                });
+            });
+        }
+    }
+];
 
 // Update Combo
-exports.updateCombo = function(req, res, next) {
-    const combo = new Combo({
-        _id: req.params.comboId,
-        character: req.body.character,
-        damage: req.body.damage,
-        date: req.body.date,
-        input: req.body.input,
-        notes: req.body.notes,
-        tags: req.body.tags,
-        type: req.body.type
-    });
+exports.updateCombo = [
+    body('input').trim().escape().isLength({ min: 1 }).withMessage('Input required.').isLength( {max: 500 }).withMessage('Input must have 500 characters or less.'),
+    body('notes', 'Notes must have 500 characters or less.').trim().escape().isLength({ max: 500 }),
 
-    // Save to database
-    Combo.findByIdAndUpdate(req.params.comboId, combo, { new: true }, function(err, results) {
-        if (err) { return next(err); }
-        res.json({
-            combo: results,
-            message: 'Success'
-        });
-    });
-};
+    function(req, res, next) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.json({ errors: errors.array() });
+        } else {
+            const combo = new Combo({
+                _id: req.params.comboId,
+                character: req.body.character,
+                damage: req.body.damage,
+                date: req.body.date,
+                input: req.body.input,
+                notes: req.body.notes,
+                tags: req.body.tags,
+                type: req.body.type
+            });
+
+            // Save to database
+            Combo.findByIdAndUpdate(req.params.comboId, combo, { new: true }, function(err, results) {
+                if (err) { return next(err); }
+                res.json({
+                    combo: results,
+                    message: 'Success'
+                });
+            });
+        }
+    }
+];
 
 // Delete Combo
 exports.deleteCombo = function(req, res, next) {
