@@ -1,8 +1,11 @@
+const mongoose = require('mongoose');
 const Character = require('../models/character');
 
 // Get Character
 exports.getCharacter = function(req, res, next) {
-    Character.findOne({ '_id': req.params.characterId })
+    const field = mongoose.Types.ObjectId.isValid(req.params.characterId) ? '_id' : 'slug';
+
+    Character.findOne({ [field]: req.params.characterId })
     .exec(function(err, results) {
         if (err) { return next(err); }
         res.json(results);
