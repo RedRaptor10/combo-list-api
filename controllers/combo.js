@@ -30,15 +30,19 @@ exports.getCombos = function(req, res, next) {
 
 // Get Character Combos
 exports.getCharacterCombos = function(req, res, next) {
+    let query = { character: req.params.character };
     let sortby = '_id';
     let orderby = 'ascending';
+
+    if (req.query.type == 'midscreen') { query.type = 'Midscreen'; }
+    else if (req.query.type == 'corner') { query.type = 'Corner'; }
 
     if (req.query.sort == 'damage') { sortby = 'damage'; }
     else if (req.query.sort == 'date') { sortby = 'date'; }
 
     if (req.query.orderby == 'desc') { orderby = 'descending'; }
 
-    Combo.find({ character: req.params.character })
+    Combo.find(query)
     .sort({ [sortby]: orderby }) // Sort by (Default: _id in ascending order)
     .exec(function(err, results) {
         if (err) { return next(err); }
